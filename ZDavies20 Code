@@ -30,7 +30,7 @@ zdavies20_pitch_pct %>% arrange(desc(pct)) -> zdavies20_pitch_pct
 zdavies20_pitch_pct %>% 
   mutate(pct = round(pct, digits = 1)) -> zdavies20_pitch_pct
   
-#Separate vs righties vs lefties %
+#Separate vs righties vs lefties % (some code from previous project)
 zdavies20 %>% filter(stand == "R") -> zdavies20vsR
 zdavies20 %>% filter(stand == "L") -> zdavies20vsL
 zdavies20 %>% filter(stand == "R") %>% 
@@ -66,6 +66,9 @@ zdavies20 %>% filter(stand == "L") %>%
         labs(title = "Davies Pitch Distribution Vs Lefties") + 
         theme(plot.title = element_text(face = "bold", hjust = .5)) -> zdavies20_pitch_pct_L_chart
   
+#combine two graphs: grid.arrange(zdavies20_pitch_pct_R_chart, zdavies20_pitch_pct_L_chart, nrow = 1)
+
+
 #heat map of Davies' pitch location, changeup location, & and whiffs on changeup
 
 #kzone function
