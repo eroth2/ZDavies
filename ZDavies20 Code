@@ -33,30 +33,38 @@ zdavies20_pitch_pct %>%
 #Separate vs righties vs lefties %
 zdavies20 %>% filter(stand == "R") -> zdavies20vsR
 zdavies20 %>% filter(stand == "L") -> zdavies20vsL
-zdavies20vsR %>% 
-  group_by(pitch_type) %>% 
+zdavies20 %>% filter(stand == "R") %>% 
+  group_by(pitch_type, year) %>% 
   summarize(n = n(),
-            pct = n/nrow(zdavies20vsR)*100) %>% 
-  select(-n) %>% mutate(pct = round(pct, 1))-> zdavies20_pitch_pct_R
-zdavies20vsL %>% 
-  group_by(pitch_type) %>% 
+            pct = n/nrow(zdavies20 %>% filter(stand == "R"))*100) %>% select(-n) %>% 
+  mutate(pct = round(pct, digits = 1)) -> zdavies20_pitch_pct_R
+  
+zdavies20 %>% mutate(year = "2020") -> zdavies20
+rbind(ZDavies_vsR, zdavies20_pitch_pct_R) -> zdaviesRpct_combined
+as.character(ZDavies$year) -> ZDavies$year
+as.character(zdavies20$year) -> zdavies20$year
+
+zdavies20 %>% filter(stand == "L") %>% 
+  group_by(pitch_type, year) %>% 
   summarize(n = n(),
-            pct = n/nrow(zdavies20vsL)*100) %>% 
-  select(-n) %>% mutate(pct = round(pct, 1))-> zdavies20_pitch_pct_L
+            pct = n/nrow(zdavies20 %>% filter(stand == "L"))*100) %>% select(-n) %>% 
+  mutate(pct = round(pct, digits = 1)) -> zdavies20_pitch_pct_L
             
 #Visualize pitch distributions
-#VsR  ggplot(zdavies20_pitch_pct_R,aes(reorder(pitch_type, -pct), pct))+
-        geom_bar(stat = "identity", fill = "#8B4513", color = "yellow") + 
+#VsR  ggplot(zdaviesRpct_combined, aes(reorder(pitch_type, -pct), pct, fill = year)) + 
+        geom_bar(stat = "identity", position = "dodge2") + 
+        scale_fill_manual(values = c("#8B4513", "yellow")) +
         xlab("Pitch Type") + ylab("% Thrown")+
-        geom_text(aes(label = pct), position = "stack", vjust = -.3) +
-        labs(title = "Davies 2020 Pitch Distribution Vs Righties") + 
-        theme(plot.title = element_text(face = "bold", hjust = .5))
-#VsL  ggplot(zdavies20_pitch_pct_L,aes(reorder(pitch_type, -pct), pct))+
-        geom_bar(stat = "identity", fill = "#8B4513", color = "yellow") + 
+        geom_text(aes(label = pct), position = position_dodge(width = .9), vjust = -.25) +
+        labs(title = "Davies Pitch Distribution Vs Righties") + 
+        theme(plot.title = element_text(face = "bold", hjust = .5)) -> zdavies20_pitch_pct_R_chart
+#VsL  ggplot(zdaviesLpct_combined, aes(reorder(pitch_type, -pct), pct, fill = year)) + 
+        geom_bar(stat = "identity", position = "dodge2") + 
+        scale_fill_manual(values = c("#8B4513", "yellow")) +
         xlab("Pitch Type") + ylab("% Thrown")+
-        geom_text(aes(label = pct), position = "stack", vjust = -.3) +
-        labs(title = "Davies 2020 Pitch Distribution Vs Lefties") + 
-        theme(plot.title = element_text(face = "bold", hjust = .5))   
+        geom_text(aes(label = pct), position = position_dodge(width = .9), vjust = -.25) +
+        labs(title = "Davies Pitch Distribution Vs Lefties") + 
+        theme(plot.title = element_text(face = "bold", hjust = .5)) -> zdavies20_pitch_pct_L_chart
   
 #heat map of Davies' pitch location, changeup location, & and whiffs on changeup
 
