@@ -59,6 +59,21 @@ zdavies20vsL %>%
         theme(plot.title = element_text(face = "bold", hjust = .5))   
   
 #heat map of Davies' pitch location, changeup location, & and whiffs on changeup
+
+#kzone function
+k_zone_plot <- function(...) {
+  ggplot(...) +
+    geom_rect(xmin = -.94706583,
+              xmax = .94706583,
+              ymin = 1.5,
+              ymax = 3.6, color = "black", alpha = 0) +
+    coord_equal() + 
+    scale_x_continuous("Horizontal location (ft.)",
+                       limits = c(-2,2)) +
+    scale_y_continuous("Vertical location (ft.) RHB POV",
+                       limits = c(0,5))
+}
+
 k_zone_plot(zdavies20, aes(px, pz)) + 
   geom_density_2d_filled(alpha = .8, show.legend = F) +
   xlab("Vertical Location (ft.) RHB POV") +
