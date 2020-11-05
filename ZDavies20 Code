@@ -102,7 +102,7 @@ k_zone_plot(zdavies20 %>% filter(pitch_type == "CH"), aes(px, pz)) +
   geom_density2d_filled(alpha = .8, show.legend = F) + geom_point(alpha = .3, col = "white") +
   xlab("Vertical Location (ft.) RHB POV") + ylab("Horizontal Location (ft.)") +
   labs(title = "Davies Changeup Whiff Location Heat Map")+
-  theme(plot.title = element_text(face = "bold", hjust = .5))
+  theme(plot.title = element_text(face = "bold", hjust = .5)) -> zdavies20_heatmap_ch_whiff
   
  #side by side graph
  grid.arrange(zdavies20_heatmap_ch, zdavies20_heatmap_ch_whiff,nrow = 1)
